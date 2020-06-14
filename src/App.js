@@ -1,12 +1,13 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Player from './AudioPlayer';
 
-function App() {
-  return (
-    <p>
-      My music player app
-    </p>
-  );
-}
+class MusicPlayer extends React.Component {
+    render() {
+      return(
+        <Player />
+      );
+    }
+  }
 
-export default App;
+export default MusicPlayer;
