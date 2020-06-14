@@ -6,6 +6,11 @@ import PropTypes from "prop-types";
 import { Lrc } from "lrc-kit";
 
 export default class RabbitPlayer extends React.Component {
+  constructor(props) {
+    super(props);
+    const music = props.music;
+    this.state={ music };
+  }
   render() {
     const lrc = Lrc.parse(this.props.lyrics);
     return (
@@ -27,8 +32,7 @@ export default class RabbitPlayer extends React.Component {
           <Row>
             <Col>
               <audio id="audio-1" controls position="center" xs="12">
-                {/* <source src="audio-1.ogg" type="audio/ogg"></source> */}
-                <source src={this.props.music} type="audio/mpeg"></source>
+                <source src={this.state.music} type="audio/mpeg"></source>
               </audio>
             </Col>
           </Row>
@@ -36,7 +40,20 @@ export default class RabbitPlayer extends React.Component {
       </>
     );
   }
+  
+  componentDidUpdate() {
+    if (this.state.music == this.props.music) {
+      return;
+    }
+    this.setState( { music: this.props.music });
+    const audio = document.getElementById('audio-1');
+    audio.pause();
+    audio.load();
+    audio.play();
+  }
 }
+
+
 
 RabbitPlayer.propTypes = {
   music: PropTypes.string,

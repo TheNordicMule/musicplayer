@@ -9,8 +9,7 @@ import RabbitPlayer from "./RabbitPlayer.jsx";
 class MusicPlayer extends React.Component {
   constructor() {
     super();
-    const music =
-      "http://sd.sycdn.kuwo.cn/5cb26c647edbd0a3e1980ec8fc2f9225/5ee67f31/resource/n1/92/63/258260127.mp3";
+    const music = "http://mp3.dwjgrw.cn/down/11423.mp3";
     const lyrics = `
 [00:18.01]Loving can hurt loving can hurt sometimes
 [00:26.01]
@@ -110,13 +109,23 @@ class MusicPlayer extends React.Component {
 [04:27.42]
 `;
     this.state = { music, lyrics };
-    // this.handleSumbit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ music: event.target.music.value, lyrics: event.target.lyrics.value });
+  }
+
+  componentDidUpdate() {
+    this.render();
+  }
+
   render() {
     return (
       <>
-        <NavBar />
-        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music}/>
+        <NavBar handleSubmit={this.handleSubmit} />
+        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music} />
       </>
     );
   }
