@@ -42,7 +42,6 @@ export default function NavBar() {
               placeholder="Link to the lyrics"
             />
           </Col>
-          <Col xs="1" />
           <Col xs="1">
             <Button type="submit" className="mb-2">
               Submit
