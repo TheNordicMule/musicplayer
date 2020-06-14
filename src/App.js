@@ -10,7 +10,7 @@ class MusicPlayer extends React.Component {
     return (
       <>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="#home" className="mx-auto">
             <img
               alt=""
               src="/logo.svg"
@@ -18,7 +18,7 @@ class MusicPlayer extends React.Component {
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            LAXIS
+            Laxis Music Player
           </Navbar.Brand>
         </Navbar>
         <Player />
