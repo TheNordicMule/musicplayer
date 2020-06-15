@@ -34,7 +34,7 @@ export default class NavBar extends React.Component {
               <Form.Control
                 className="mb-2"
                 id="music"
-                placeholder="Link to the song"
+                placeholder="Link to the song (MPEG filetype, such as a mp3)"
                 name="music"
               />
             </Col>
@@ -46,12 +46,15 @@ export default class NavBar extends React.Component {
                 className="mb-2"
                 id="lyrics"
                 name="lyrics"
-                placeholder="Link to the lyrics"
+                placeholder="Link to the lyrics(LRC file)"
               />
             </Col>
             <Col xs="2">
-              <Button type="submit" className="mb-2">
-                Submit
+              <Button type="submit" className="mb-2" variant="dark">
+                submit
+              </Button>
+              <Button type="reset" className="mb-2" variant="dark" onClick={this.props.resetInitial}>
+                reset
               </Button>
             </Col>
           </Form.Row>
@@ -61,6 +64,7 @@ export default class NavBar extends React.Component {
   }
 }
 
-NavBar.propTypes={
+NavBar.propTypes = {
   handleSubmit: PropTypes.func,
+  resetInitial: PropTypes.func,
 };

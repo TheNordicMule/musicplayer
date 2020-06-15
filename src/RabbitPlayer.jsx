@@ -4,15 +4,20 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PropTypes from "prop-types";
 import { Lrc } from "lrc-kit";
+// eslint-disable-next-line no-unused-vars
+import RabbitLyrics from "rabbit-lyrics";
 
 export default class RabbitPlayer extends React.Component {
   constructor(props) {
     super(props);
     const music = props.music;
-    this.state={ music };
+    const lyrics = props.lyrics;
+    this.state = { music, lyrics };
   }
+
   render() {
-    const lrc = Lrc.parse(this.props.lyrics);
+    const lrc = Lrc.parse(this.state.lyrics);
+    const text = lrc.toString({ combine: false });
     return (
       <>
         <Container>
@@ -25,7 +30,7 @@ export default class RabbitPlayer extends React.Component {
                 data-height="700"
                 data-alignment="center"
               >
-                {lrc.toString({ combine: false })}
+                {text}
               </div>
             </Col>
           </Row>
@@ -40,20 +45,27 @@ export default class RabbitPlayer extends React.Component {
       </>
     );
   }
-  
-  componentDidUpdate() {
-    if (this.state.music == this.props.music) {
+
+  async componentDidUpdate() {
+    if (this.state.music === this.props.music) {
       return;
     }
-    this.setState( { music: this.props.music });
-    const audio = document.getElementById('audio-1');
-    audio.pause();
-    audio.load();
-    audio.play();
+    if (this.state.music !== this.props.music) {
+      this.setState({ music: this.props.music });
+      const audio = document.getElementById("audio-1");
+      try {
+        await audio.pause();
+        await audio.load();
+        await audio.play();
+      } catch (e) {
+        console.log("The user interrupted the playback");
+      }
+    }
+    if (this.state.lyrics !== this.props.lyrics) {
+      this.setState({ lyrics: this.props.lyrics });
+    }
   }
 }
-
-
 
 RabbitPlayer.propTypes = {
   music: PropTypes.string,

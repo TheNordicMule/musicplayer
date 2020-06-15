@@ -15,3 +15,15 @@
     height: 80%;
 }
 
+body {
+    position: fixed;
+    overflow-y: scroll;
+    width: 100%;
+    overflow: hidden;
+}
+
+.rabbit-lyrics rabbit-lyrics--default{
+    position: fixed;
+    overflow-y: scroll;
+    width: 100%;
+}

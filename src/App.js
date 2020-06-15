@@ -1,16 +1,11 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// eslint-disable-next-line no-unused-vars
-import RabbitLyrics from "rabbit-lyrics";
 import NavBar from "./NavBar.jsx";
 import RabbitPlayer from "./RabbitPlayer.jsx";
 
-class MusicPlayer extends React.Component {
-  constructor() {
-    super();
-    const music = "http://mp3.dwjgrw.cn/down/11423.mp3";
-    const lyrics = `
+const initialMusic = "http://mp3.dwjgrw.cn/down/11423.mp3";
+const initiallyrics = `
 [00:18.01]Loving can hurt loving can hurt sometimes
 [00:26.01]
 [00:26.81]But It is the only thing that I know
@@ -108,24 +103,36 @@ class MusicPlayer extends React.Component {
 [04:18.42]www.RentAnAdviser.com
 [04:27.42]
 `;
-    this.state = { music, lyrics };
+
+
+class MusicPlayer extends React.Component {
+  constructor() {
+    super();
+    this.state = { music: initialMusic, lyrics: initiallyrics };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resetInitial = this.resetInitial.bind(this);
+  }
+
+  resetInitial() {
+    this.setState({ music: initialMusic, lyrics: initiallyrics });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({ music: event.target.music.value, lyrics: event.target.lyrics.value });
-  }
-
-  componentDidUpdate() {
-    this.render();
+    this.setState({
+      music: event.target.music.value,
+      lyrics: String(event.target.lyrics.value),
+    });
   }
 
   render() {
     return (
       <>
-        <NavBar handleSubmit={this.handleSubmit} />
-        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music} />
+        <NavBar
+          handleSubmit={this.handleSubmit}
+          resetInitial={this.resetInitial}
+        />
+        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music}/>
       </>
     );
   }
