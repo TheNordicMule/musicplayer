@@ -111,10 +111,19 @@ class MusicPlayer extends React.Component {
     this.state = { music: initialMusic, lyrics: initiallyrics };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetInitial = this.resetInitial.bind(this);
+    this.handleLyricsSubmit = this.handleLyricsSubmit.bind(this);
   }
 
   resetInitial() {
     this.setState({ music: initialMusic, lyrics: initiallyrics });
+  }
+
+  // WIP
+  handleLyricsSubmit(e) {
+    e.preventDefault();
+    const newLyrics = document.forms.editIssue.modifiedLyrics.value;
+    this.setState({ lyrics: newLyrics });
+    this.render();
   }
 
   handleSubmit(event) {
@@ -131,8 +140,10 @@ class MusicPlayer extends React.Component {
         <NavBar
           handleSubmit={this.handleSubmit}
           resetInitial={this.resetInitial}
+          handleLyricsSubmit={this.handleLyricsSubmit}
+          lyrics={this.state.lyrics}
         />
-        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music}/>
+        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music} />
       </>
     );
   }

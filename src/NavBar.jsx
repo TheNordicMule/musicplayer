@@ -9,17 +9,22 @@ import Modal from "react-bootstrap/Modal";
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showModal: false };
+    this.state = { showModal: false, lyrics: this.props.lyrics };
     this.handleclose = this.handleclose.bind(this);
     this.handleShow = this.handleShow.bind(this);
+    this.changeLyrics = this.changeLyrics.bind(this);
   }
 
   handleclose() {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, lyrics: this.props.lyrics });
   }
 
   handleShow() {
     this.setState({ showModal: true });
+  }
+
+  changeLyrics(e) {
+    this.setState({ lyrics: e.target.value });
   }
 
   render() {
@@ -90,21 +95,28 @@ export default class NavBar extends React.Component {
             <Modal.Title>Modify Lyrics</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <div>
-                <textarea
-                  id="exampleFormControlTextarea1"
-                  rows="50"
+            <Form name="editIssue">
+              <Form.Group>
+                <Form.Control
+                  as="textarea"
+                  rows="30"
                   cols="100"
-                ></textarea>
-              </div>
+                  value={this.state.lyrics}
+                  name="modifiedLyrics"
+                  onChange={this.changeLyrics}
+                />
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleclose}>
               Close
             </Button>
-            <Button variant="primary" onClick={this.handleclose}>
+            <Button
+              variant="primary"
+              onClick={this.props.handleLyricsSubmit}
+              type="submit"
+            >
               Save Changes
             </Button>
           </Modal.Footer>
@@ -118,4 +130,6 @@ NavBar.propTypes = {
   handleSubmit: PropTypes.func,
   resetInitial: PropTypes.func,
   changeLyrics: PropTypes.func,
+  handleLyricsSubmit: PropTypes.func,
+  lyrics: PropTypes.string,
 };
