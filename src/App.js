@@ -130,7 +130,6 @@ class MusicPlayer extends React.Component {
     event.preventDefault();
     this.setState({
       music: event.target.music.value,
-      lyrics: event.target.lyrics.value,
     });
   }
 

@@ -5,6 +5,8 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
+import Card from "react-bootstrap/Card";
+import Accordion from "react-bootstrap/Accordion";
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -44,84 +46,90 @@ export default class NavBar extends React.Component {
           </Navbar.Brand>
         </Navbar>
 
-        <Form onSubmit={this.props.handleSubmit}>
-          <Form.Row className="align-items-center">
-            <Col xs="5">
-              <Form.Label htmlFor="music" srOnly>
-                Link to the song
-              </Form.Label>
-              <Form.Control
-                className="mb-2"
-                id="music"
-                placeholder="Link to the song (MPEG filetype, such as a mp3)"
-                name="music"
-              />
-            </Col>
-            <Col xs="5">
-              <Form.Label htmlFor="lyrics" srOnly>
-                Link to the lyrics
-              </Form.Label>
-              <Form.Control
-                className="mb-2"
-                id="lyrics"
-                name="lyrics"
-                placeholder="Link to the lyrics(LRC file)"
-              />
-            </Col>
-            <Col xs="2">
-              <Button type="submit" className="mb-2" variant="dark">
-                Submit
-              </Button>
-              <Button
-                type="reset"
-                className="mb-2"
-                variant="dark"
-                onClick={this.props.resetInitial}
-              >
-                Reset
-              </Button>
-              <Button
-                type="reset"
-                className="mb-2"
-                variant="dark"
-                onClick={this.handleShow}
-              >
-                Modify Lyrics
-              </Button>
-            </Col>
-          </Form.Row>
-        </Form>
-        <Modal show={this.state.showModal} onHide={this.handleclose} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Modify Lyrics</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form name="editIssue">
-              <Form.Group>
-                <Form.Control
-                  as="textarea"
-                  rows="30"
-                  cols="100"
-                  defaultValue={this.props.lyrics}
-                  name="modifiedLyrics"
-                  onChange={this.changeLyrics}
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleclose}>
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              onClick={this.props.handleLyricsSubmit}
-              type="submit"
-            >
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <Accordion defaultActiveKey="0">
+          <Card>
+            <Accordion.Toggle as={Card.Header} eventKey="0">
+              Click me to change songs or lyrics!
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                <Form onSubmit={this.props.handleSubmit}>
+                  <Form.Row className="align-items-center">
+                    <Col md={{ span: 4, offset: 0 }}>
+                      <Form.Label htmlFor="music" srOnly>
+                        Link to the song
+                      </Form.Label>
+                      <Form.Control
+                        className="mb-2"
+                        id="music"
+                        placeholder="Link to the song (MPEG filetype, such as a mp3)"
+                        name="music"
+                      />
+                    </Col>
+
+                    <Col md={{ span: 2, offset: 6 }}>
+                      <Button type="submit" className="mb-2" variant="dark">
+                        Submit
+                      </Button>
+
+                      <Button
+                        type="reset"
+                        className="mb-2"
+                        variant="dark"
+                        onClick={this.props.resetInitial}
+                      >
+                        Reset
+                      </Button>
+                      <Button
+                        type="reset"
+                        className="mb-2"
+                        variant="dark"
+                        onClick={this.handleShow}
+                      >
+                        Modify Lyrics
+                      </Button>
+                    </Col>
+                  </Form.Row>
+                </Form>
+                <Modal
+                  show={this.state.showModal}
+                  onHide={this.handleclose}
+                  size="lg"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Modify Lyrics</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form name="editIssue">
+                      <Form.Group>
+                        <Form.Control
+                          as="textarea"
+                          rows="30"
+                          cols="100"
+                          defaultValue={this.props.lyrics}
+                          name="modifiedLyrics"
+                          onChange={this.changeLyrics}
+                        />
+                      </Form.Group>
+                    </Form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleclose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={this.props.handleLyricsSubmit}
+                      type="submit"
+                    >
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
       </>
     );
   }

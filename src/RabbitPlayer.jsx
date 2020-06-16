@@ -10,6 +10,7 @@ export default class RabbitPlayer extends React.Component {
     super(props);
     this.mediaRef = React.createRef();
     this.textRef = React.createRef();
+    this.prevLyrics = this.props.lyrics;
   }
   render() {
     return (
@@ -28,6 +29,8 @@ export default class RabbitPlayer extends React.Component {
               </div>
             </Col>
           </Row>
+
+
           <Row>
             <Col>
               <audio
@@ -56,6 +59,9 @@ export default class RabbitPlayer extends React.Component {
       console.log("The user interrupted the playback");
     }
 
+    if (this.prevLyrics === this.props.lyrics) {
+      return;
+    }
     this.textRef.current.classList.remove("rabbit-lyrics");
     this.textRef.current.classList.remove("rabbit-lyrics--default");
     this.textRef.current.classList.remove("rabbit-lyrics--enabled");
@@ -65,6 +71,7 @@ export default class RabbitPlayer extends React.Component {
       mediaElement: this.mediaRef.current,
       height: 800,
     });
+    this.prevLyrics = this.props.lyrics;
   }
 
   componentDidMount() {
