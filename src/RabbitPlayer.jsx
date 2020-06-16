@@ -69,7 +69,7 @@ export default class RabbitPlayer extends React.Component {
     new RabbitLyrics({
       element: this.textRef.current,
       mediaElement: this.mediaRef.current,
-      height: 800,
+      height: 700,
     });
     this.prevLyrics = this.props.lyrics;
   }
@@ -78,7 +78,7 @@ export default class RabbitPlayer extends React.Component {
     new RabbitLyrics({
       element: this.textRef.current,
       mediaElement: this.mediaRef.current,
-      height: 800,
+      height: 700,
     });
   }
 }
