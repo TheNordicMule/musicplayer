@@ -24,6 +24,7 @@ export default class NavBar extends React.Component {
   }
 
   changeLyrics(e) {
+    e.preventDefault();
     this.setState({ lyrics: e.target.value });
   }
 
@@ -101,7 +102,7 @@ export default class NavBar extends React.Component {
                   as="textarea"
                   rows="30"
                   cols="100"
-                  value={this.state.lyrics}
+                  defaultValue={this.props.lyrics}
                   name="modifiedLyrics"
                   onChange={this.changeLyrics}
                 />
