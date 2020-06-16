@@ -69,7 +69,7 @@ export default class NavBar extends React.Component {
             </Col>
             <Col xs="2">
               <Button type="submit" className="mb-2" variant="dark">
-                submit
+                Submit
               </Button>
               <Button
                 type="reset"
@@ -77,7 +77,7 @@ export default class NavBar extends React.Component {
                 variant="dark"
                 onClick={this.props.resetInitial}
               >
-                reset
+                Reset
               </Button>
               <Button
                 type="reset"
