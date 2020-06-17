@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import RabbitLyrics from "rabbit-lyrics";
 import AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import Toast from "react-bootstrap/Toast";
 
 export default class RabbitPlayer extends React.Component {
   constructor(props) {
@@ -14,6 +15,17 @@ export default class RabbitPlayer extends React.Component {
     this.textRef = React.createRef();
     this.prevLyrics = this.props.lyrics;
     this.prevMusic = this.props.music;
+    this.state = { showToast: false };
+    this.toggleToast = this.toggleToast.bind(this);
+    this.toggleFalse = this.toggleFalse.bind(this);
+  }
+
+  toggleToast() {
+    this.setState({ showToast: true });
+  }
+
+  toggleFalse() {
+    this.setState({ showToast: false });
   }
 
   render() {
@@ -45,18 +57,44 @@ export default class RabbitPlayer extends React.Component {
                   // eslint-disable-next-line react/jsx-key
                   <i
                     className="fas fa-chevron-circle-up"
-                    onClick={this.props.speedUp}
+                    onClick={() => {
+                      this.toggleToast();
+                      this.props.speedUp();
+                    }}
                   ></i>,
                   // eslint-disable-next-line react/jsx-key
                   <i
                     className="fas fa-chevron-circle-down"
-                    onClick={this.props.speedDown}
+                    onClick={() => {
+                      this.toggleToast();
+                      this.props.speedDown();
+                    }}
                   ></i>,
                 ]}
               />
             </Col>
           </Row>
         </Container>
+
+        <Toast
+          onClose={this.toggleFalse}
+          show={this.state.showToast}
+          delay={3000}
+          autohide
+        >
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded mr-2"
+              alt=""
+            />
+            <strong className="mr-auto">Laxis, Inc</strong>
+            <small>Just Now</small>
+          </Toast.Header>
+          <Toast.Body>
+            You changed playback speed to {this.props.speed}
+          </Toast.Body>
+        </Toast>
       </>
     );
   }
