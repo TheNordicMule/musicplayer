@@ -48,7 +48,10 @@ export default class RabbitPlayer extends React.Component {
                     onClick={this.props.speedUp}
                   ></i>,
                   // eslint-disable-next-line react/jsx-key
-                  <i className="fas fa-chevron-circle-down" onClick={this.props.speedDown}></i>,
+                  <i
+                    className="fas fa-chevron-circle-down"
+                    onClick={this.props.speedDown}
+                  ></i>,
                 ]}
               />
             </Col>
@@ -59,12 +62,15 @@ export default class RabbitPlayer extends React.Component {
   }
 
   async componentDidUpdate() {
-    if (this.prevMusic === this.props.music && this.prevLyrics === this.props.lyrics) {
-      this.mediaRef.current.audio.current.playbackRate=this.props.speed;
+    if (
+      this.prevMusic === this.props.music &&
+      this.prevLyrics === this.props.lyrics
+    ) {
+      this.mediaRef.current.audio.current.playbackRate = this.props.speed;
       return;
     }
 
-    if (this.prevMusic !== this.props.music) {      
+    if (this.prevMusic !== this.props.music) {
       const audio = this.mediaRef.current.audio.current;
       try {
         await audio.pause();
@@ -73,6 +79,11 @@ export default class RabbitPlayer extends React.Component {
       } catch (e) {
         console.log("The user interrupted the playback");
       }
+      new RabbitLyrics({
+        element: this.textRef.current,
+        mediaElement: this.mediaRef.current.audio.current,
+        height: 700,
+      });
       this.prevMusic = this.props.music;
     }
 
