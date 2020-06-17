@@ -4,6 +4,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PropTypes from "prop-types";
 import RabbitLyrics from "rabbit-lyrics";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 export default class RabbitPlayer extends React.Component {
   constructor(props) {
@@ -30,10 +32,9 @@ export default class RabbitPlayer extends React.Component {
             </Col>
           </Row>
 
-
           <Row>
             <Col>
-              <audio
+              {/*  <audio
                 id="audio-1"
                 controls
                 position="center"
@@ -41,7 +42,12 @@ export default class RabbitPlayer extends React.Component {
                 ref={this.mediaRef}
               >
                 <source src={this.props.music} type="audio/mpeg"></source>
-              </audio>
+              </audio> */}
+              <AudioPlayer
+                autoPlay
+                src={this.props.music}
+                ref={this.mediaRef}
+              />
             </Col>
           </Row>
         </Container>
@@ -50,7 +56,7 @@ export default class RabbitPlayer extends React.Component {
   }
 
   async componentDidUpdate() {
-    const audio = document.getElementById("audio-1");
+    const audio = this.mediaRef.current.audio.current;
     try {
       await audio.pause();
       await audio.load();
@@ -68,7 +74,7 @@ export default class RabbitPlayer extends React.Component {
     this.textRef.current.classList.remove("rabbit-lyrics--playing");
     new RabbitLyrics({
       element: this.textRef.current,
-      mediaElement: this.mediaRef.current,
+      mediaElement: this.mediaRef.current.audio.current,
       height: 700,
     });
     this.prevLyrics = this.props.lyrics;
@@ -77,7 +83,7 @@ export default class RabbitPlayer extends React.Component {
   componentDidMount() {
     new RabbitLyrics({
       element: this.textRef.current,
-      mediaElement: this.mediaRef.current,
+      mediaElement: this.mediaRef.current.audio.current,
       height: 700,
     });
   }
