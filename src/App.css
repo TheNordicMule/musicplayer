@@ -31,3 +31,17 @@ body {
 .rabbit-lyrics__line {
     text-align: center;
 }
+
+.fa-chevron-circle-up {
+  border: 8px solid white;
+  transform: scale(1.2);
+  color:#868686;
+ cursor: pointer;
+}
+
+.fa-chevron-circle-down {
+  border: 8px solid white;
+  transform: scale(1.2);
+  color:#868686;
+ cursor: pointer;
+}

@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PropTypes from "prop-types";
 import RabbitLyrics from "rabbit-lyrics";
-import AudioPlayer from "react-h5-audio-player";
+import AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 export default class RabbitPlayer extends React.Component {
@@ -13,7 +13,32 @@ export default class RabbitPlayer extends React.Component {
     this.mediaRef = React.createRef();
     this.textRef = React.createRef();
     this.prevLyrics = this.props.lyrics;
+    this.prevMusic = this.props.music;
+    this.state = { speed: 1 };
+    this.speedDown = this.speedDown.bind(this);
+    this.speedUp = this.speedUp.bind(this);
   }
+
+  speedUp() {
+    const currentSpeed = this.state.speed;
+    if (currentSpeed === 2) return;
+    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
+    const index = speedOptions.indexOf(currentSpeed);
+    const nextSpeed = speedOptions[index + 1];
+    this.setState({ speed: nextSpeed});
+    this.mediaRef.current.audio.current.playbackRate = this.state.speed;
+  }
+
+  speedDown() {
+    const currentSpeed = this.state.speed;
+    if (currentSpeed === 0.5) return;
+    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
+    const index = speedOptions.indexOf(currentSpeed);
+    const nextSpeed = speedOptions[index - 1];
+    this.setState({ speed: nextSpeed});
+    this.mediaRef.current.audio.current.playbackRate = this.state.speed;
+  }
+
   render() {
     return (
       <>
@@ -34,19 +59,20 @@ export default class RabbitPlayer extends React.Component {
 
           <Row>
             <Col>
-              {/*  <audio
-                id="audio-1"
-                controls
-                position="center"
-                xs="12"
-                ref={this.mediaRef}
-              >
-                <source src={this.props.music} type="audio/mpeg"></source>
-              </audio> */}
               <AudioPlayer
                 autoPlay
                 src={this.props.music}
                 ref={this.mediaRef}
+                customAdditionalControls={[
+                  RHAP_UI.LOOP,
+                  // eslint-disable-next-line react/jsx-key
+                  <i
+                    className="fas fa-chevron-circle-up"
+                    onClick={this.speedUp}
+                  ></i>,
+                  // eslint-disable-next-line react/jsx-key
+                  <i className="fas fa-chevron-circle-down" onClick={this.speedDown}></i>,
+                ]}
               />
             </Col>
           </Row>
@@ -56,13 +82,19 @@ export default class RabbitPlayer extends React.Component {
   }
 
   async componentDidUpdate() {
-    const audio = this.mediaRef.current.audio.current;
-    try {
-      await audio.pause();
-      await audio.load();
-      await audio.play();
-    } catch (e) {
-      console.log("The user interrupted the playback");
+    if (this.prevMusic === this.props.music && this.prevLyrics === this.props.lyrics) {
+      return;
+    }
+
+    if (this.prevMusic !== this.props.music) {      
+      const audio = this.mediaRef.current.audio.current;
+      try {
+        await audio.pause();
+        await audio.load();
+        await audio.play();
+      } catch (e) {
+        console.log("The user interrupted the playback");
+      }
     }
 
     if (this.prevLyrics === this.props.lyrics) {
