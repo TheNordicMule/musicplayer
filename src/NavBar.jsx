@@ -36,13 +36,6 @@ export default class NavBar extends React.Component {
       <>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#home" className="mx-auto">
-            <img
-              alt=""
-              src="/logo.svg"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />{" "}
             Laxis Music Player
           </Navbar.Brand>
         </Navbar>

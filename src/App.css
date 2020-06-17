@@ -27,3 +27,7 @@ body {
     overflow-y: scroll;
     width: 100%;
 }
+
+.rabbit-lyrics__line {
+    text-align: center;
+}
