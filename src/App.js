@@ -71,18 +71,27 @@ const initiallyrics = `
 [04:11.23]"Wait for me to come home"
 `;
 
-
 class MusicPlayer extends React.Component {
   constructor() {
     super();
-    this.state = { music: initialMusic, lyrics: initiallyrics };
+    this.state = {
+      music: initialMusic,
+      lyrics: initiallyrics,
+      playbackSpeed: 1,
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetInitial = this.resetInitial.bind(this);
     this.handleLyricsSubmit = this.handleLyricsSubmit.bind(this);
+    this.speedDown = this.speedDown.bind(this);
+    this.speedUp = this.speedUp.bind(this);
   }
 
   resetInitial() {
-    this.setState({ music: initialMusic, lyrics: initiallyrics });
+    this.setState({
+      music: initialMusic,
+      lyrics: initiallyrics,
+      playbackSpeed: 1,
+    });
   }
 
   // WIP
@@ -100,6 +109,24 @@ class MusicPlayer extends React.Component {
     });
   }
 
+  speedUp() {
+    const currentSpeed = this.state.playbackSpeed;
+    if (currentSpeed === 2) return;
+    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
+    const index = speedOptions.indexOf(currentSpeed);
+    const nextSpeed = speedOptions[index + 1];
+    this.setState({ playbackSpeed: nextSpeed });
+  }
+
+  speedDown() {
+    const currentSpeed = this.state.playbackSpeed;
+    if (currentSpeed === 0.5) return;
+    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
+    const index = speedOptions.indexOf(currentSpeed);
+    const nextSpeed = speedOptions[index - 1];
+    this.setState({ playbackSpeed: nextSpeed });
+  }
+
   render() {
     return (
       <>
@@ -109,7 +136,13 @@ class MusicPlayer extends React.Component {
           handleLyricsSubmit={this.handleLyricsSubmit}
           lyrics={this.state.lyrics}
         />
-        <RabbitPlayer lyrics={this.state.lyrics} music={this.state.music} />
+        <RabbitPlayer
+          lyrics={this.state.lyrics}
+          music={this.state.music}
+          speed={this.state.playbackSpeed}
+          speedUp = {this.speedUp}
+          speedDown = {this.speedDown}
+        />
       </>
     );
   }

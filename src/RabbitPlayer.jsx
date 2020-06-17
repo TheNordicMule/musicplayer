@@ -14,29 +14,6 @@ export default class RabbitPlayer extends React.Component {
     this.textRef = React.createRef();
     this.prevLyrics = this.props.lyrics;
     this.prevMusic = this.props.music;
-    this.state = { speed: 1 };
-    this.speedDown = this.speedDown.bind(this);
-    this.speedUp = this.speedUp.bind(this);
-  }
-
-  speedUp() {
-    const currentSpeed = this.state.speed;
-    if (currentSpeed === 2) return;
-    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
-    const index = speedOptions.indexOf(currentSpeed);
-    const nextSpeed = speedOptions[index + 1];
-    this.setState({ speed: nextSpeed});
-    this.mediaRef.current.audio.current.playbackRate = this.state.speed;
-  }
-
-  speedDown() {
-    const currentSpeed = this.state.speed;
-    if (currentSpeed === 0.5) return;
-    const speedOptions = [0.5, 0.8, 1, 1.2, 1.5, 2];
-    const index = speedOptions.indexOf(currentSpeed);
-    const nextSpeed = speedOptions[index - 1];
-    this.setState({ speed: nextSpeed});
-    this.mediaRef.current.audio.current.playbackRate = this.state.speed;
   }
 
   render() {
@@ -68,10 +45,10 @@ export default class RabbitPlayer extends React.Component {
                   // eslint-disable-next-line react/jsx-key
                   <i
                     className="fas fa-chevron-circle-up"
-                    onClick={this.speedUp}
+                    onClick={this.props.speedUp}
                   ></i>,
                   // eslint-disable-next-line react/jsx-key
-                  <i className="fas fa-chevron-circle-down" onClick={this.speedDown}></i>,
+                  <i className="fas fa-chevron-circle-down" onClick={this.props.speedDown}></i>,
                 ]}
               />
             </Col>
@@ -83,6 +60,7 @@ export default class RabbitPlayer extends React.Component {
 
   async componentDidUpdate() {
     if (this.prevMusic === this.props.music && this.prevLyrics === this.props.lyrics) {
+      this.mediaRef.current.audio.current.playbackRate=this.props.speed;
       return;
     }
 
@@ -124,4 +102,7 @@ export default class RabbitPlayer extends React.Component {
 RabbitPlayer.propTypes = {
   music: PropTypes.string,
   lyrics: PropTypes.string,
+  speed: PropTypes.number,
+  speedDown: PropTypes.func,
+  speedUp: PropTypes.func,
 };
