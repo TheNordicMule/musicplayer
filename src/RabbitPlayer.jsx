@@ -73,6 +73,7 @@ export default class RabbitPlayer extends React.Component {
       } catch (e) {
         console.log("The user interrupted the playback");
       }
+      this.prevMusic = this.props.music;
     }
 
     if (this.prevLyrics === this.props.lyrics) {
