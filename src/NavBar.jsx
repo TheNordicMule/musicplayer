@@ -61,7 +61,7 @@ export default class NavBar extends React.Component {
                       />
                     </Col>
 
-                    <Col md={{ span: 3, offset: 6 }}>
+                    <Col md={{ span: 4, offset: 4 }}>
                       <Button type="submit" className="mb-2" variant="dark">
                         Submit
                       </Button>

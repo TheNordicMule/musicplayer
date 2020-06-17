@@ -3,15 +3,16 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import * as jsPDF from "jspdf";
-
+import { Document, Packer, Paragraph, TextRun } from "docx";
+import { saveAs } from "file-saver";
 
 export default class TextFormat extends React.Component {
   constructor(props) {
     super(props);
     this.downloadTxtFile = this.downloadTxtFile.bind(this);
     this.downloadPdfFile = this.downloadPdfFile.bind(this);
+    this.downloadDocFile = this.downloadDocFile.bind(this);
   }
-
 
   downloadTxtFile() {
     const element = document.createElement("a");
@@ -34,15 +35,37 @@ export default class TextFormat extends React.Component {
     doc.save("myFile.pdf");
   }
 
+  downloadDocFile() {
+    const doc = new Document();
+    const content = this.props.lyrics;
+    doc.addSection({
+      properties: {},
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun(content),
+          ],
+        }),
+      ],
+    });
+    Packer.toBlob(doc).then((blob) => {
+      // saveAs from FileSaver will download the file
+      saveAs(blob, "example.docx");
+    });
+  }
+
   render() {
     return (
       <>
-      <Button className="mb-2" variant="dark" onClick={this.downloadTxtFile}>
-        Download txt
-      </Button>
-      <Button className="mb-2" variant="dark" onClick={this.downloadPdfFile}>
-        Download pdf
-      </Button>
+        <Button className="mb-2" variant="dark" onClick={this.downloadTxtFile}>
+          Download txt
+        </Button>
+        <Button className="mb-2" variant="dark" onClick={this.downloadPdfFile}>
+          Download pdf
+        </Button>
+        <Button className="mb-2" variant="dark" onClick={this.downloadDocFile}>
+          Download docx
+        </Button>
       </>
     );
   }
