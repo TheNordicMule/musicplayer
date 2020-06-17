@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
+import TextFormat from "./TextFormat";
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ export default class NavBar extends React.Component {
               <Card.Body>
                 <Form onSubmit={this.props.handleSubmit}>
                   <Form.Row className="align-items-center">
-                    <Col md={{ span: 4, offset: 0 }}>
+                    <Col md={{ span: 3, offset: 0 }}>
                       <Form.Label htmlFor="music" srOnly>
                         Link to the song
                       </Form.Label>
@@ -67,7 +68,7 @@ export default class NavBar extends React.Component {
                       />
                     </Col>
 
-                    <Col md={{ span: 2, offset: 6 }}>
+                    <Col md={{ span: 3, offset: 6 }}>
                       <Button type="submit" className="mb-2" variant="dark">
                         Submit
                       </Button>
@@ -88,6 +89,7 @@ export default class NavBar extends React.Component {
                       >
                         Modify Lyrics
                       </Button>
+                      <TextFormat lyrics={this.props.lyrics}/>
                     </Col>
                   </Form.Row>
                 </Form>
