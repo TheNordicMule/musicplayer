@@ -15,10 +15,12 @@ export default class TextFormat extends React.Component {
     this.downloadTxtFile = this.downloadTxtFile.bind(this);
     this.downloadPdfFile = this.downloadPdfFile.bind(this);
     this.downloadDocFile = this.downloadDocFile.bind(this);
-    this.state = { showModal: false, includeLyrics: true };
+    //includeLyics: 0 = include 1 = not include
+    this.state = { showModal: false, excludeLyrics: 0 };
     this.toggleFalse = this.toggleFalse.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
   }
 
   toggleFalse() {
@@ -31,30 +33,39 @@ export default class TextFormat extends React.Component {
     this.setState({ showModal: true });
   }
 
+  handleContentChange() {
+    if (this.state.excludeLyrics == 1) {
+      return removeTimestamp(this.props.lyrics);
+    } else {
+      return this.props.lyrics;
+    }
+  }
+
+
   downloadTxtFile() {
+    const content = this.handleContentChange();
     const element = document.createElement("a");
-    const content = this.props.lyrics;
     const file = new Blob([content], {
       type: "text/plain",
     });
     element.href = URL.createObjectURL(file);
-    element.download = "myFile.txt";
+    element.download = "MyFile.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
   }
 
   downloadPdfFile() {
-    const content = this.props.lyrics;
+    const content = this.handleContentChange();
     var doc = new jsPDF();
     doc.setFontSize(5);
     doc.setFont("Helvetica");
     doc.text(content, 10, 10);
-    doc.save("myFile.pdf");
+    doc.save("MyFile.pdf");
   }
 
   downloadDocFile() {
+    const content = this.handleContentChange();
     const doc = new Document();
-    const content = this.props.lyrics;
     doc.addSection({
       properties: {},
       children: [
@@ -65,15 +76,15 @@ export default class TextFormat extends React.Component {
     });
     Packer.toBlob(doc).then((blob) => {
       // saveAs from FileSaver will download the file
-      saveAs(blob, "myFile.docx");
+      saveAs(blob, "MyFile.docx");
     });
   }
 
   handleChange() {
-    this.setState({includeLyrics: document.forms.includeLyrics.include.value});
-    console.log(document.forms.includeLyrics);
+    this.setState({
+      excludeLyrics: document.forms.excludeLyrics.include.value,
+    });
   }
-
 
   render() {
     return (
@@ -86,9 +97,7 @@ export default class TextFormat extends React.Component {
             <Modal.Title>Modify Lyrics</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form
-              name="includeLyrics"
-            >
+            <Form name="excludeLyrics">
               <Form.Label
                 className="mr-sm-2"
                 htmlFor="inlineFormCustomSelect"
