@@ -4,7 +4,10 @@ import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import * as jsPDF from "jspdf";
 import { Document, Packer, Paragraph, TextRun } from "docx";
+import Form from "react-bootstrap/Form";
 import { saveAs } from "file-saver";
+import removeTimestamp from "./RemoveTimestamp.js";
+import Modal from "react-bootstrap/Modal";
 
 export default class TextFormat extends React.Component {
   constructor(props) {
@@ -12,6 +15,20 @@ export default class TextFormat extends React.Component {
     this.downloadTxtFile = this.downloadTxtFile.bind(this);
     this.downloadPdfFile = this.downloadPdfFile.bind(this);
     this.downloadDocFile = this.downloadDocFile.bind(this);
+    this.state = { showModal: false, includeLyrics: true };
+    this.toggleFalse = this.toggleFalse.bind(this);
+    this.toggleShow = this.toggleShow.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  toggleFalse() {
+    this.setState({
+      showModal: false,
+    });
+  }
+
+  toggleShow() {
+    this.setState({ showModal: true });
   }
 
   downloadTxtFile() {
@@ -42,30 +59,83 @@ export default class TextFormat extends React.Component {
       properties: {},
       children: [
         new Paragraph({
-          children: [
-            new TextRun(content),
-          ],
+          children: [new TextRun(content)],
         }),
       ],
     });
     Packer.toBlob(doc).then((blob) => {
       // saveAs from FileSaver will download the file
-      saveAs(blob, "example.docx");
+      saveAs(blob, "myFile.docx");
     });
   }
+
+  handleChange() {
+    this.setState({includeLyrics: document.forms.includeLyrics.include.value});
+    console.log(document.forms.includeLyrics);
+  }
+
 
   render() {
     return (
       <>
-        <Button className="mb-2" variant="dark" onClick={this.downloadTxtFile}>
-          Download txt
+        <Button className="mb-2" variant="dark" onClick={this.toggleShow}>
+          Download Document
         </Button>
-        <Button className="mb-2" variant="dark" onClick={this.downloadPdfFile}>
-          Download pdf
-        </Button>
-        <Button className="mb-2" variant="dark" onClick={this.downloadDocFile}>
-          Download docx
-        </Button>
+        <Modal show={this.state.showModal} onHide={this.toggleFalse} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Modify Lyrics</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form
+              name="includeLyrics"
+            >
+              <Form.Label
+                className="mr-sm-2"
+                htmlFor="inlineFormCustomSelect"
+                srOnly
+              >
+                Preference
+              </Form.Label>
+              <Form.Control
+                as="select"
+                className="mr-sm-2"
+                id="inlineFormCustomSelect"
+                custom
+                name="include"
+                onChange={this.handleChange}
+              >
+                <option value="0">Download with Timestamp</option>
+                <option value="1">Download without Timestamp</option>
+              </Form.Control>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              className="mb-2"
+              variant="dark"
+              onClick={this.downloadTxtFile}
+              type="submit"
+            >
+              Download txt
+            </Button>
+            <Button
+              className="mb-2"
+              variant="dark"
+              onClick={this.downloadPdfFile}
+              type="submit"
+            >
+              Download pdf
+            </Button>
+            <Button
+              type="submit"
+              className="mb-2"
+              variant="dark"
+              onClick={this.downloadDocFile}
+            >
+              Download docx
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </>
     );
   }
