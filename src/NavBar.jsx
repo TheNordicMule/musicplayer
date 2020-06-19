@@ -8,6 +8,8 @@ import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import TextFormat from "./TextFormat";
+import Search from "./Search.jsx";
+import Row from "react-bootstrap/Row";
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -43,49 +45,55 @@ export default class NavBar extends React.Component {
         <Accordion defaultActiveKey="0">
           <Card>
             <Accordion.Toggle as={Card.Header} eventKey="0">
-              Click me to change songs or lyrics!
+              Click me to explore more features of this player
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="0">
               <Card.Body>
-                <Form onSubmit={this.props.handleSubmit}>
-                  <Form.Row className="align-items-center">
-                    <Col md={{ span: 3, offset: 0 }}>
-                      <Form.Label htmlFor="music" srOnly>
-                        Link to the song
-                      </Form.Label>
-                      <Form.Control
-                        className="mb-2"
-                        id="music"
-                        placeholder="Link to the song (MPEG filetype, such as a mp3)"
-                        name="music"
-                      />
-                    </Col>
+                <Row>
+                  <Col md="7">
+                    <Form onSubmit={this.props.handleSubmit}>
+                      <Form.Row className="align-items-center">
+                        <Form.Label htmlFor="music" srOnly>
+                          Link to the song
+                        </Form.Label>
+                        <Col>
+                          <Form.Control
+                            className="mb-2"
+                            id="music"
+                            placeholder="Link to the song (MPEG filetype, such as a mp3)"
+                            name="music"
+                          />
+                        </Col>
 
-                    <Col md={{ span: 9 }}>
-                      <Button type="submit" className="mb-2" variant="dark">
-                        Submit
-                      </Button>
-
-                      <Button
-                        type="reset"
-                        className="mb-2"
-                        variant="dark"
-                        onClick={this.props.resetInitial}
-                      >
-                        Reset
-                      </Button>
-                      <Button
-                        type="reset"
-                        className="mb-2"
-                        variant="dark"
-                        onClick={this.handleShow}
-                      >
-                        Modify Lyrics
-                      </Button>
-                      <TextFormat lyrics={this.props.lyrics}/>
-                    </Col>
-                  </Form.Row>
-                </Form>
+                        <Col>
+                          <Button type="submit" className="mb-2" variant="dark">
+                            Submit
+                          </Button>
+                          <Button
+                            type="reset"
+                            className="mb-2"
+                            variant="dark"
+                            onClick={this.props.resetInitial}
+                          >
+                            Reset
+                          </Button>
+                          <Button
+                            type="reset"
+                            className="mb-2"
+                            variant="dark"
+                            onClick={this.handleShow}
+                          >
+                            Modify Lyrics
+                          </Button>
+                          <TextFormat lyrics={this.props.lyrics} />
+                        </Col>
+                      </Form.Row>
+                    </Form>
+                  </Col>
+                  <Col md="5">
+                    <Search />
+                  </Col>
+                </Row>
                 <Modal
                   show={this.state.showModal}
                   onHide={this.handleclose}
