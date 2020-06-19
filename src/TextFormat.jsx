@@ -122,7 +122,7 @@ export default class TextFormat extends React.Component {
         </Button>
         <Modal show={this.state.showModal} onHide={this.toggleFalse} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>Modify Lyrics</Modal.Title>
+            <Modal.Title>Download document</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form name="excludeLyrics">
