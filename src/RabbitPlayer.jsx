@@ -81,6 +81,11 @@ export default class RabbitPlayer extends React.Component {
           show={this.state.showToast}
           delay={3000}
           autohide
+          style={{
+            position: "absolute",
+            top: 500,
+            right:150,
+          }}
         >
           <Toast.Header>
             <img

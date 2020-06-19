@@ -1,25 +1,15 @@
-#audio-1 {
-    transform: scale(1.7);
-    text-align: center;
-    margin-top: 2rem;
-    display: inline-block
-}
-
 .col {
     text-align: center;
     height: 80%;
 }
-
 
 .rabbit-lyrics rabbit-lyrics--default rabbit-lyrics--enabled {
     height: 80%;
 }
 
 body {
-    position: fixed;
     overflow-y: scroll;
     width: 100%;
-    overflow: hidden;
 }
 
 .rabbit-lyrics rabbit-lyrics--default{
