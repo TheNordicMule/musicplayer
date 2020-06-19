@@ -35,3 +35,12 @@ body {
   color:#868686;
  cursor: pointer;
 }
+
+
+.rabbit-lyrics-searched {
+    color: #17eb7e;
+}
+
+.rabbit-lyrics-highlighted {
+    color: #f03a07;
+}

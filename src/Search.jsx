@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 
 export default function Search() {
-  const [searchedText, setSearchedText] = useState("");
-  const [highlightedText, setHighlightedText] = useState(null);
+  const input = useRef("");
   const form = (
     <Form name="searchTable">
       <Form.Row>
@@ -15,19 +14,22 @@ export default function Search() {
             name="search"
             type="text"
             placeholder="Enter text you want to search"
-            defaultValue={searchedText}
-            onChange={handleChange}
+            defaultValue=""
+            ref={input}
           />
         </Col>
 
         <Col>
-          <Button variant="dark" type="submit" onClick={searchLyrics}>
+          <Button variant="dark" onClick={() => changeLyricsProperty("search")}>
             Search
           </Button>
-          <Button variant="dark" type="submit" onClick={highlightLyrics}>
+          <Button
+            variant="dark"
+            onClick={() => changeLyricsProperty("highlight")}
+          >
             Highlight
           </Button>
-          <Button variant="dark" type="submit" onClick={resetHighlight}>
+          <Button variant="dark" onClick={() => changeLyricsProperty("revert")}>
             Revert highlights
           </Button>
         </Col>
@@ -36,21 +38,21 @@ export default function Search() {
   );
   return form;
 
-  function searchLyrics() {
-
-  }
-
-  function highlightLyrics() {
-
-  }
-
-  function resetHighlight() {
-    setHighlightedText(null);
-  }
-
-
-
-  function handleChange() {
-      setSearchedText(document.forms.searchTable.search.value);
+  function changeLyricsProperty(option) {
+    const text = input.current.value;
+    const divs = document.getElementsByClassName("rabbit-lyrics__line");
+    const length = divs.length;
+    for (let i = 0; i < length; i++) {
+      const div = divs.item(i);
+      div.classList.remove("rabbit-lyrics-highlighted");
+      div.classList.remove("rabbit-lyrics-searched");
+      const lyric = div.innerText;
+      if (option === "search" && lyric.includes(text)) {
+        div.classList.add("rabbit-lyrics-searched");
+      }
+      if (option === "highlight") {
+          div.classList.add('rabbit-lyrics-highlighted');
+      }
+    }
   }
 }
