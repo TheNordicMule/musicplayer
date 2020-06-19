@@ -13,7 +13,7 @@ export default function Search() {
           <Form.Control
             name="search"
             type="text"
-            placeholder="Enter text you want to search"
+            placeholder="Enter text you want to search or highlight"
             defaultValue=""
             ref={input}
           />
@@ -57,21 +57,27 @@ export default function Search() {
           `<span class="rabbit-lyrics-searched">${text}</span>`
         );
       }
-      if (option === "highlight") {
-        const selected = window.getSelection();
-        console.log(selected);
+      if (option === "highlight" && div.innerHTML.includes(text)) {
+        div.classList.add("rabbit-lyrics-highlighted");
       }
     }
   }
 
+  //revert all sections that are searched
   function revertSearch() {
     const searched = document.getElementsByClassName("rabbit-lyrics-searched");
     while (searched.length) {
       const div = searched.item(0);
       div.classList.remove("rabbit-lyrics-searched");
+      const parent = div.parentNode;
+      let text = parent.innerHTML;
+      text = text.replace(`<span class="">`, "");
+      text = text.replace(`</span>`, "");
+      parent.innerHTML = text;
     }
   }
 
+  //revert all sections that are highlighed
   function revertHighlighted() {
     const highlighted = document.getElementsByClassName(
       "rabbit-lyrics-highlighted"
