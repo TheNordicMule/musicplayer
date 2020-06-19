@@ -34,16 +34,44 @@ export default class TextFormat extends React.Component {
   }
 
   handleContentChange() {
-    if (this.state.excludeLyrics === '1') {
+    console.log(typeof this.state.excludelyrics);
+    if (this.state.excludeLyrics === "1") {
       return removeTimestamp(this.props.lyrics);
+    } else if (this.state.excludeLyrics === "3") {
+      return this.getHighlighted("withoutStamp");
+    } else if (this.state.excludeLyrics === "2") {
+      return this.getHighlighted("withStamp");
     } else {
       return this.props.lyrics;
     }
   }
 
+  getHighlighted(option) {
+    const highlighted = document.getElementsByClassName(
+      "rabbit-lyrics-highlighted"
+    );
+    let doc = "";
+    for (let i = 0; i < highlighted.length; i++) {
+      const item = highlighted.item(i);
+      if (option === "withoutStamp") {
+        doc = doc + item.innerText + "\n";
+      }
+      if (option === "withStamp") {
+        const time = item.dataset.start;
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        const beforeDecimal = Math.floor(seconds / 1);
+        const afterDecimal = Math.floor((seconds % 1) / 0.01);
+        const timestamp = `[${minutes}.${beforeDecimal}.${afterDecimal}]`;
+        doc = doc + timestamp + item.innerText + "\n";
+      }
+    }
+    return doc;
+  }
 
   downloadTxtFile() {
     const content = this.handleContentChange();
+    console.log(content);
     const element = document.createElement("a");
     const file = new Blob([content], {
       type: "text/plain",
@@ -115,6 +143,12 @@ export default class TextFormat extends React.Component {
               >
                 <option value="0">Download with Timestamp</option>
                 <option value="1">Download without Timestamp</option>
+                <option value="2">
+                  Download highlighed content with Timestamp
+                </option>
+                <option value="3">
+                  Download highlighted content without Timestamp
+                </option>
               </Form.Control>
             </Form>
           </Modal.Body>
