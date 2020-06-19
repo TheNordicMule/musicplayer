@@ -34,7 +34,7 @@ export default class TextFormat extends React.Component {
   }
 
   handleContentChange() {
-    if (this.state.excludeLyrics == 1) {
+    if (this.state.excludeLyrics === '1') {
       return removeTimestamp(this.props.lyrics);
     } else {
       return this.props.lyrics;
